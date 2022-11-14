@@ -27,3 +27,18 @@ function parseInput_list(content::String, sep::String, dataType::String)
         return String.(tmp)
     end
 end
+
+function parseInput_Array(content::Array{String})
+    N = length(content)
+    n = length(content[1])
+
+    data_array = Array{Int, 2}(undef, N, n)
+
+    for i in 1:N
+        for j in 1:n
+            data_array[i, j] = parse(Int, string(content[i][j]))
+        end
+    end
+    return data_array
+
+end
