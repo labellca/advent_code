@@ -41,7 +41,19 @@ selection_lose = Dict("A"=>"C", "B"=>"A", "C"=>"B")
 score2 = Dict("A"=>1, "B"=>2, "C"=>3)
 
 function getSelection(row)
-
+    o, oc = row
+    if oc == "X"
+        return score2[selection_lose[o]]
+    elseif oc == "Y"
+        return score2[o]
+    else
+        return score2[selection_win[o]]
+    end
 end
 
 data[!, :outcome2] = [outcome[i] for i in data[:, :me]]
+data[!, :selected2] = getSelection.(eachrow(data[:, [:opponent, :me]]))
+data[!, :score2] = data.selected2 + data.outcome2
+
+## what would your total score be if everything goes exactly according to your strategy guide?
+sum(data.score2)
