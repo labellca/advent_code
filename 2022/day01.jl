@@ -1,10 +1,12 @@
 ###########
-#### Part 1
+#### Data
 fn = "_data/day01.txt"
 f = open(fn, "r")
 lines  = readlines(f)
 close(f)
 
+###########
+#### Part 1
 idx = findall(x -> x == "", lines)
 prev = 1
 tot_by_elf = Array{Int,1}(undef, length(idx))
