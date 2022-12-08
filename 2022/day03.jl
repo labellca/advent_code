@@ -44,7 +44,7 @@ group_nb = 1
 
 function getCommon3(p1::String, p2::String, p3::String)
     for i in p1
-        if occursin(string(i), p2) && occursin(string(i), p2)
+        if occursin(string(i), p2) && occursin(string(i), p3)
             return i
         end
     end
