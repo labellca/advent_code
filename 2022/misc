@@ -1,0 +1,46 @@
+function isPossible(x::Int64, y::Int64, xᵢ::Int64, yᵢ::Int64, visited::Matrix{Int64})
+    if visited[xᵢ, yᵢ] == 0 && (heightmap[x, y] == 'S' || findHeightRank(heightmap[xᵢ, yᵢ]) - findHeightRank(heightmap[x, y]) ≤ 1)
+        return true
+    else
+        return false
+    end
+
+end
+
+function findSmallestPath(x::Int64, y::Int64, unvisited::Matrix, visited::Matrix{Int64}, n::Int64, min_path::Int64)
+    if x == xₙ && y == yₙ
+        println("Found path s -> E with $n steps")
+        println()
+        return minimum([n, min_path])
+    
+    else
+        visited[x, y] = 1 ## height visited
+
+        ## move up
+        if x-1 > 0 && isPossible(x, y, x-1, y, visited)
+            unvisited[x-1, y] = minimum([unvisited[x-1, y], n+1])
+            min_path = findSmallestPath(x-1, y, unvisited, visited, n+1, min_path)
+        end
+
+        ## move right
+        if y+1 ≤ size(heightmap)[2] && isPossible(x, y, x, y+1, visited) 
+            unvisited[x, y+1] = minimum([unvisited[x, y+1], n+1])
+            min_path = findSmallestPath(x, y+1, unvisited, visited, n+1,min_path )
+        end
+
+        ## move down
+        if x+1 ≤ size(heightmap)[1] && isPossible(x, y, x+1, y, visited)
+            unvisited[x+1, y] = minimum([unvisited[x+1, y], n+1])
+            min_path = findSmallestPath(x+1, y, unvisited, visited, n+1, min_path)
+        end
+
+        ## move left
+        if y-1 > 0 && isPossible(x, y, x, y-1, visited)
+            unvisited[x, y-1] = minimum([unvisited[x, y-1], n+1])
+            min_path = findSmallestPath(x, y-1, unvisited, visited, n+1, min_path)
+        end
+
+        visited[x, y] = 0 ## backtracking
+        return min_path
+    end
+end
